@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZ-900 Microsoft Azure Fundamentals Exam Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .selected-option { border-color: #2563eb; background-color: #eff6ff; }
+        .correct-answer { border-color: #16a34a; background-color: #f0fdf4; }
+        .incorrect-answer { border-color: #dc2626; background-color: #fef2f2; }
+        .drag-item { cursor: grab; user-select: none; }
+        .drag-item:active { cursor: grabbing; }
+        .drop-zone { min-height: 48px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-blue-700 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-brands fa-microsoft text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-wide">AZ-900 Exam Simulator</h1>
+            </div>
+            <div class="flex items-center space-x-6 text-sm">
+                <div id="progress-text" class="font-medium">Question 1 of 55</div>
+                <div class="w-32 bg-blue-900 rounded-full h-2.5 overflow-hidden">
+                    <div id="progress-bar" class="bg-cyan-400 h-2.5 transition-all duration-300" style="width: 2%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 md:p-6 flex flex-col justify-center">
+
+        <!-- Intro Screen -->
+        <div id="intro-card" class="bg-white rounded-xl shadow-lg p-6 md:p-8 text-center border border-slate-200">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">AZ-900 Microsoft Azure Fundamentals</h2>
+            <p class="text-slate-600 mb-6 max-w-xl mx-auto">
+                Comprehensive 55-Question Practice Exam featuring Multiple Choice, Yes/No, Dropdown Selection, and Drag-and-Drop Matching formats.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left text-sm max-w-2xl mx-auto">
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div class="font-semibold text-slate-800 mb-1"><i class="fa-solid fa-cloud text-blue-600 mr-2"></i> Cloud Concepts</div>
+                    <div class="text-slate-500">25–30% of Exam</div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div class="font-semibold text-slate-800 mb-1"><i class="fa-solid fa-cubes text-blue-600 mr-2"></i> Azure Architecture</div>
+                    <div class="text-slate-500">35–40% of Exam</div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div class="font-semibold text-slate-800 mb-1"><i class="fa-solid fa-shield-halved text-blue-600 mr-2"></i> Governance & Mgmt</div>
+                    <div class="text-slate-500">30–35% of Exam</div>
+                </div>
+            </div>
+            <button id="start-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow transition duration-200 text-lg">
+                Start Practice Exam
+            </button>
+        </div>
+
+        <!-- Question Container -->
+        <div id="question-card" class="hidden bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden flex flex-col">
+            <!-- Question Header -->
+            <div class="bg-slate-100 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                <span id="question-domain" class="text-xs font-semibold uppercase tracking-wider text-blue-700 bg-blue-100 px-2.5 py-1 rounded-full">Domain</span>
+                <span id="question-type" class="text-xs font-medium text-slate-500">Multiple Choice</span>
+            </div>
+
+            <!-- Question Body -->
+            <div class="p-6 md:p-8 flex-grow">
+                <h3 id="question-text" class="text-lg md:text-xl font-semibold text-slate-900 mb-6 leading-relaxed">
+                    Question text goes here...
+                </h3>
+
+                <!-- Options Area (Dynamic per Question Type) -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Dynamic insertion -->
+                </div>
+
+                <!-- Explanation Area -->
+                <div id="explanation-box" class="hidden mt-6 p-4 rounded-lg border text-sm leading-relaxed">
+                    <div id="explanation-title" class="font-bold mb-1">Explanation:</div>
+                    <div id="explanation-text" class="text-slate-700">Detailed rationale explanation...</div>
+                </div>
+            </div>
+
+            <!-- Question Footer / Controls -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex justify-between items-center">
+                <button id="prev-btn" class="px-4 py-2 text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 disabled:opacity-50 font-medium text-sm">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Previous
+                </button>
+                <button id="submit-ans-btn" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition">
+                    Submit Answer
+                </button>
+                <button id="next-btn" class="hidden px-6 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-900 font-medium text-sm transition">
+                    Next <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Card -->
+        <div id="results-card" class="hidden bg-white rounded-xl shadow-lg p-6 md:p-8 border border-slate-200">
+            <div class="text-center mb-8">
+                <div id="score-badge" class="w-24 h-24 rounded-full flex flex-col items-center justify-center mx-auto mb-4 text-white text-3xl font-extrabold shadow-inner">
+                    <span id="score-percentage">0%</span>
+                </div>
+                <h2 id="score-title" class="text-2xl font-bold text-slate-900">Exam Results</h2>
+                <p id="score-subtitle" class="text-slate-600 mt-1">Passing score: 700 / 1000 (70%)</p>
+            </div>
+
+            <!-- Score Summary Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 text-center">
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <div class="text-xs font-medium text-slate-500 uppercase">Total Score</div>
+                    <div id="points-text" class="text-2xl font-bold text-slate-800 mt-1">0 / 55</div>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <div class="text-xs font-medium text-slate-500 uppercase">Scaled Score</div>
+                    <div id="scaled-score-text" class="text-2xl font-bold text-slate-800 mt-1">0 / 1000</div>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <div class="text-xs font-medium text-slate-500 uppercase">Correct</div>
+                    <div id="correct-count" class="text-2xl font-bold text-emerald-600 mt-1">0</div>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <div class="text-xs font-medium text-slate-500 uppercase">Incorrect</div>
+                    <div id="incorrect-count" class="text-2xl font-bold text-rose-600 mt-1">0</div>
+                </div>
+            </div>
+
+            <!-- Domain Performance Breakdown -->
+            <h3 class="text-lg font-bold text-slate-900 mb-4 border-b pb-2">Domain Performance Breakdown</h3>
+            <div id="domain-results" class="space-y-4 mb-8">
+                <!-- Dynamic insertion -->
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button id="restart-btn" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> Retake Practice Exam
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Quiz Logic Data & Controller -->
+    <script>
+        const questions = [
+            // Domain 1: Cloud Concepts
+            {
+                id: 1,
+                domain: "Cloud Concepts",
+                type: "mcq",
+                question: "Which cloud deployment model provides the highest level of control over security and infrastructure while being entirely managed by a single organization?",
+                options: ["Public Cloud", "Private Cloud", "Hybrid Cloud", "Multi-cloud"],
+                answer: 1,
+                rationale: "A Private Cloud is dedicated solely to one organization, giving full control over hardware, maintenance, and security policies."
+            },
+            {
+                id: 2,
+                domain: "Cloud Concepts",
+                type: "yesno",
+                question: "Determine whether the statement is true or false: Operational Expenses (OpEx) refer to upfront capital spending on physical infrastructure.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 1,
+                rationale: "False. Upfront capital investments on hardware are Capital Expenditures (CapEx). Operational Expenses (OpEx) refer to pay-as-you-go ongoing operational costs."
+            },
+            {
+                id: 3,
+                domain: "Cloud Concepts",
+                type: "mcq",
+                question: "Which Azure service model leaves the customer responsible ONLY for data, devices, and access management, while Microsoft manages the OS, runtime, and hardware?",
+                options: ["IaaS (Infrastructure as a Service)", "PaaS (Platform as a Service)", "SaaS (Software as a Service)", "Serverless"],
+                answer: 1,
+                rationale: "Under PaaS, Microsoft manages the operating systems, network, and hardware infrastructure, leaving data and application configuration to the customer."
+            },
+            {
+                id: 4,
+                domain: "Cloud Concepts",
+                type: "dropdown",
+                question: "Select the appropriate cloud concept for each scenario below:",
+                items: [
+                    { statement: "The ability to automatically increase or decrease compute resources based on demand spike is:", options: ["Elasticity", "High Availability", "Fault Tolerance", "Agility"], answer: "Elasticity" },
+                    { statement: "Ensuring an application remains accessible with minimal downtime during failures is:", options: ["Elasticity", "High Availability", "Agility", "Economies of scale"], answer: "High Availability" }
+                ],
+                rationale: "Elasticity is the dynamic scaling of resources up/down based on load. High Availability ensures services stay up with redundant hardware/locations."
+            },
+            {
+                id: 5,
+                domain: "Cloud Concepts",
+                type: "mcq",
+                question: "Which cloud benefit allows businesses to rapidly deploy new resources in minutes without ordering hardware?",
+                options: ["Scalability", "Agility", "Disaster Recovery", "Geo-distribution"],
+                answer: 1,
+                rationale: "Agility refers to the speed and flexibility at which cloud resources can be provisioned and deployed to adapt to business needs."
+            },
+            {
+                id: 6,
+                domain: "Cloud Concepts",
+                type: "yesno",
+                question: "Is the following statement true: Under the Shared Responsibility Model, the cloud provider is always responsible for user account access and permissions?",
+                options: ["Yes (True)", "No (False)"],
+                answer: 1,
+                rationale: "False. The customer is ALWAYS responsible for managing user identity, access credentials, and permissions regardless of IaaS, PaaS, or SaaS."
+            },
+            {
+                id: 7,
+                domain: "Cloud Concepts",
+                type: "dragdrop",
+                question: "Match each cloud computing service model to its description:",
+                targets: ["IaaS", "PaaS", "SaaS"],
+                items: [
+                    { text: "Rent virtual machines and network configurations", correctTarget: "IaaS" },
+                    { text: "Environment for building and hosting applications without managing OS", correctTarget: "PaaS" },
+                    { text: "Fully managed web-based software application (e.g., Microsoft 365)", correctTarget: "SaaS" }
+                ],
+                rationale: "IaaS gives basic compute/networking primitives; PaaS hosts apps without OS management; SaaS delivers ready-to-use software applications."
+            },
+            {
+                id: 8,
+                domain: "Cloud Concepts",
+                type: "mcq",
+                question: "What refers to the ability to scale resources vertically by adding more RAM or CPU to an existing Virtual Machine?",
+                options: ["Horizontal Scaling (Scaling out)", "Vertical Scaling (Scaling up)", "Elastic load balancing", "Fault Tolerance"],
+                answer: 1,
+                rationale: "Scaling up (vertical scaling) adds more computing capacity (CPU, Memory) to a single machine, whereas scaling out adds more instances."
+            },
+            {
+                id: 9,
+                domain: "Cloud Concepts",
+                type: "yesno",
+                question: "In a Public Cloud deployment, resources are shared among multiple tenants over the public internet.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 0,
+                rationale: "True. Public clouds host multi-tenant infrastructure managed by the cloud vendor and accessible over public connections."
+            },
+            {
+                id: 10,
+                domain: "Cloud Concepts",
+                type: "mcq",
+                question: "How does 'Economies of Scale' benefit Azure cloud users?",
+                options: [
+                    "Users can run custom hardware in Azure datacenters.",
+                    "Azure can pass cost savings to customers due to bulk infrastructure purchasing.",
+                    "Customers own the physical datacenters.",
+                    "Data latency is eliminated entirely across regions."
+                ],
+                answer: 1,
+                rationale: "Economies of scale mean large providers like Microsoft buy hardware at scale and operate efficiently, lowering prices for end customers."
+            },
+            {
+                id: 11,
+                domain: "Cloud Concepts",
+                type: "dropdown",
+                question: "Match the CapEx vs OpEx scenarios:",
+                items: [
+                    { statement: "Buying physical servers for an on-premises datacenter is:", options: ["CapEx", "OpEx"], answer: "CapEx" },
+                    { statement: "Paying a monthly subscription for Azure Virtual Machines usage is:", options: ["CapEx", "OpEx"], answer: "OpEx" }
+                ],
+                rationale: "Purchasing physical assets upfront is Capital Expenditure (CapEx). Paying for ongoing consumable services is Operational Expenditure (OpEx)."
+            },
+            {
+                id: 12,
+                domain: "Cloud Concepts",
+                type: "mcq",
+                question: "Which cloud model combines an on-premises datacenter with public cloud services, allowing data and applications to be shared between them?",
+                options: ["Private Cloud", "Hybrid Cloud", "Community Cloud", "Serverless Architecture"],
+                answer: 1,
+                rationale: "A Hybrid cloud environment integrates on-premises private datacenter infrastructure with public cloud resources."
+            },
+            {
+                id: 13,
+                domain: "Cloud Concepts",
+                type: "yesno",
+                question: "Serverless computing requires customers to configure and manage operating system security updates.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 1,
+                rationale: "False. Serverless computing (e.g. Azure Functions) fully abstracts servers and OS management from the user."
+            },
+            {
+                id: 14,
+                domain: "Cloud Concepts",
+                type: "mcq",
+                question: "Which concept guarantees that an application remains operational even during localized hardware failures inside a datacenter?",
+                options: ["Fault Tolerance", "Agility", "CapEx", "Elasticity"],
+                answer: 0,
+                rationale: "Fault tolerance ensures continuous operation without interruption by using redundant hardware components."
+            },
+            {
+                id: 15,
+                domain: "Cloud Concepts",
+                type: "mcq",
+                question: "What is the primary advantage of Consumption-based pricing in cloud computing?",
+                options: [
+                    "Fixed monthly costs regardless of usage",
+                    "No operational maintenance required",
+                    "You pay only for the resources you actually use",
+                    "Guaranteed 100% uptime SLA"
+                ],
+                answer: 2,
+                rationale: "Consumption-based pricing ensures you are billed based on exact utilization, preventing over-provisioning expenditure."
+            },
+
+            // Domain 2: Azure Architecture and Services
+            {
+                id: 16,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "Which Azure structural component is used to logically organize subscriptions into a unified governance hierarchy?",
+                options: ["Resource Groups", "Management Groups", "Availability Zones", "Azure Regions"],
+                answer: 1,
+                rationale: "Management Groups sit above subscriptions to manage access, policies, and compliance across multiple subscriptions."
+            },
+            {
+                id: 17,
+                domain: "Azure Architecture & Services",
+                type: "yesno",
+                question: "Azure Availability Zones are physically separate datacenters within the same Azure region, each equipped with independent power, cooling, and networking.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 0,
+                rationale: "True. Availability Zones protect against datacenter outages by isolating compute into distinct physical datacenters per region."
+            },
+            {
+                id: 18,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "Which Azure service allows you to deploy and run containerized applications without managing underlying virtual machines or orchestration clusters?",
+                options: ["Azure Virtual Machines", "Azure Container Instances (ACI)", "Azure Virtual Desktop", "Azure Functions"],
+                answer: 1,
+                rationale: "Azure Container Instances (ACI) provides a fast, simple serverless way to run containers without managing VMs."
+            },
+            {
+                id: 19,
+                domain: "Azure Architecture & Services",
+                type: "dragdrop",
+                question: "Match the Azure Storage tier to its appropriate use case:",
+                targets: ["Hot Tier", "Cool Tier", "Archive Tier"],
+                items: [
+                    { text: "Data accessed frequently with low latency needs", correctTarget: "Hot Tier" },
+                    { text: "Data stored for at least 30 days, infrequently accessed", correctTarget: "Cool Tier" },
+                    { text: "Long-term backup stored for 180 days with flexible retrieval time", correctTarget: "Archive Tier" }
+                ],
+                rationale: "Hot tier is optimized for active data; Cool for data stored >30 days; Archive for long-term retention (>180 days) with offline storage."
+            },
+            {
+                id: 20,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "Which Azure networking service connects virtual networks together so resources can communicate across networks as if they were on the same network?",
+                options: ["Azure ExpressRoute", "Virtual Network (VNet) Peering", "Azure VPN Gateway", "Azure Front Door"],
+                answer: 1,
+                rationale: "VNet Peering seamlessly connects Azure Virtual Networks together with high bandwidth across Microsoft's backbone."
+            },
+            {
+                id: 21,
+                domain: "Azure Architecture & Services",
+                type: "dropdown",
+                question: "Choose the correct Azure Compute service for each requirement:",
+                items: [
+                    { statement: "Event-driven serverless code execution:", options: ["Azure Functions", "Azure Virtual Machines", "Azure App Service"], answer: "Azure Functions" },
+                    { statement: "Full control over OS and software stack:", options: ["Azure Functions", "Azure Virtual Machines", "Azure App Service"], answer: "Azure Virtual Machines" },
+                    { statement: "Managed web app hosting for HTTP apps:", options: ["Azure Functions", "Azure Virtual Machines", "Azure App Service"], answer: "Azure App Service" }
+                ],
+                rationale: "Azure Functions is serverless code; VMs offer full OS control; App Service provides managed web application hosting."
+            },
+            {
+                id: 22,
+                domain: "Azure Architecture & Services",
+                type: "yesno",
+                question: "An Azure Resource Group can contain resources from multiple Azure regions.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 0,
+                rationale: "True. Resource Groups are logical containers and can group resources located across different Azure regions."
+            },
+            {
+                id: 23,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "Which Azure Storage service is designed for storing large amounts of unstructured data such as video, images, and documents?",
+                options: ["Azure Files", "Azure Disk Storage", "Azure Blob Storage", "Azure Queue Storage"],
+                answer: 2,
+                rationale: "Azure Blob Storage is optimized for massive unstructured binary and text data."
+            },
+            {
+                id: 24,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "What dedicated private connection bypasses the public internet entirely to connect on-premises network infrastructure directly to Azure?",
+                options: ["Azure VPN Gateway", "Azure ExpressRoute", "Azure Point-to-Site VPN", "Azure Traffic Manager"],
+                answer: 1,
+                rationale: "ExpressRoute provides a private, high-speed connection between on-premises datacenters and Azure without routing via the public internet."
+            },
+            {
+                id: 25,
+                domain: "Azure Architecture & Services",
+                type: "yesno",
+                question: "A single Azure subscription can belong to multiple Management Groups simultaneously.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 1,
+                rationale: "False. A subscription can belong to only ONE Management Group in the hierarchy at a time."
+            },
+            {
+                id: 26,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "Which database service offers a fully managed, globally distributed NoSQL database with single-digit millisecond latency?",
+                options: ["Azure SQL Database", "Azure Cosmos DB", "Azure Database for MySQL", "Azure Synapse Analytics"],
+                answer: 1,
+                rationale: "Azure Cosmos DB is a multi-model, globally distributed NoSQL database built for high responsiveness."
+            },
+            {
+                id: 27,
+                domain: "Azure Architecture & Services",
+                type: "dragdrop",
+                question: "Match the database service with its core technology:",
+                targets: ["Azure SQL Database", "Azure Cosmos DB", "Azure Blob Storage"],
+                items: [
+                    { text: "Relational DB engine based on Microsoft SQL Server", correctTarget: "Azure SQL Database" },
+                    { text: "Multi-model NoSQL document database", correctTarget: "Azure Cosmos DB" },
+                    { text: "Unstructured object store", correctTarget: "Azure Blob Storage" }
+                ],
+                rationale: "Azure SQL provides relational SQL engine; Cosmos DB is NoSQL; Blob Storage holds object/file data."
+            },
+            {
+                id: 28,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "What Azure capability allows automated horizontal scaling of Virtual Machines based on load metric triggers?",
+                options: ["Virtual Machine Scale Sets (VMSS)", "Azure Availability Sets", "Azure Load Balancer", "Azure App Service Plan"],
+                answer: 0,
+                rationale: "Virtual Machine Scale Sets automatically create and remove identical VM instances in response to traffic load."
+            },
+            {
+                id: 29,
+                domain: "Azure Architecture & Services",
+                type: "yesno",
+                question: "Deleting an Azure Resource Group deletes all resources contained inside that resource group.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 0,
+                rationale: "True. Resource Group deletion cascades to all nested resources within that group."
+            },
+            {
+                id: 30,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "Which service offers serverless SMB file shares accessible over standard network protocols?",
+                options: ["Azure Blob Storage", "Azure Files", "Azure Table Storage", "Azure Data Lake Storage"],
+                answer: 1,
+                rationale: "Azure Files exposes cloud-hosted SMB and NFS file shares accessible by Windows, Linux, and macOS."
+            },
+            {
+                id: 31,
+                domain: "Azure Architecture & Services",
+                type: "dropdown",
+                question: "Select the correct Azure region type:",
+                items: [
+                    { statement: "A pair of regions located within the same geography (>300 miles apart) for disaster recovery:", options: ["Region Pair", "Sovereign Region", "Availability Zone"], answer: "Region Pair" },
+                    { statement: "Isolated datacenters dedicated for US government compliance:", options: ["Region Pair", "Sovereign Region", "Availability Zone"], answer: "Sovereign Region" }
+                ],
+                rationale: "Region Pairs facilitate disaster recovery across geographic distances. Sovereign regions serve strict national security standards."
+            },
+            {
+                id: 32,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "What service allows physical data migration to Azure using hardware appliances sent by Microsoft when bandwidth is limited?",
+                options: ["Azure Data Factory", "Azure Migrate", "Azure Data Box", "Azure ExpressRoute"],
+                answer: 2,
+                rationale: "Azure Data Box family provides physical storage appliances to ship petabytes of data to Azure offline."
+            },
+            {
+                id: 33,
+                domain: "Azure Architecture & Services",
+                type: "yesno",
+                question: "Azure Virtual Desktop provides host access to multi-session Windows 10/11 environments in the cloud.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 0,
+                rationale: "True. Azure Virtual Desktop enables virtualized Windows desktop instances in the cloud."
+            },
+            {
+                id: 34,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "Which Azure service acts as a centralized repository for securely storing application secrets, keys, and TLS certificates?",
+                options: ["Azure Key Vault", "Azure Information Protection", "Azure Defender", "Azure Active Directory"],
+                answer: 0,
+                rationale: "Azure Key Vault secures cryptographic keys, credentials, and passwords in hardware security modules."
+            },
+            {
+                id: 35,
+                domain: "Azure Architecture & Services",
+                type: "mcq",
+                question: "Which deployment resource allows setting up developer environments quickly with pre-configured templates?",
+                options: ["Azure DevTest Labs", "Azure Arc", "Azure Virtual Network", "Azure Monitor"],
+                answer: 0,
+                rationale: "Azure DevTest Labs gives developers quick access to environments with configured templates and cost guardrails."
+            },
+
+            // Domain 3: Management and Governance
+            {
+                id: 36,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "What feature in Entra ID (formerly Azure AD) prompts users for a second form of verification such as an authenticator app code?",
+                options: ["Single Sign-On (SSO)", "Multi-Factor Authentication (MFA)", "Conditional Access", "Role-Based Access Control (RBAC)"],
+                answer: 1,
+                rationale: "Multi-Factor Authentication (MFA) requires two or more verification factors to authenticate access."
+            },
+            {
+                id: 37,
+                domain: "Governance & Management",
+                type: "yesno",
+                question: "Azure Resource Locks set to 'CanNotDelete' prevent users with Owner rights from accidentally deleting a resource.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 0,
+                rationale: "True. Resource locks override user permissions until the lock itself is explicitly removed."
+            },
+            {
+                id: 38,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "Which Azure governance service enforces rules and compliance standards across your resources (e.g., restricting VM sizes)?",
+                options: ["Azure Policy", "Azure Blueprints", "Azure Advisor", "Azure Monitor"],
+                answer: 0,
+                rationale: "Azure Policy enforces corporate standards and compliance rules on resources dynamically."
+            },
+            {
+                id: 39,
+                domain: "Governance & Management",
+                type: "dragdrop",
+                question: "Match the management tool with its definition:",
+                targets: ["Azure Portal", "Azure CLI", "Azure Cloud Shell"],
+                items: [
+                    { text: "Web-based graphical user interface in a browser", correctTarget: "Azure Portal" },
+                    { text: "Cross-platform command-line tool installed locally", correctTarget: "Azure CLI" },
+                    { text: "Browser-accessible command terminal hosted in Azure", correctTarget: "Azure Cloud Shell" }
+                ],
+                rationale: "Portal is GUI based; CLI is installed on local OS; Cloud Shell runs terminal sessions inside browser."
+            },
+            {
+                id: 40,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "Which security model operates under the foundational principle: 'Never trust, always verify'?",
+                options: ["Defense in Depth", "Zero Trust", "Shared Responsibility", "Role-Based Access Control"],
+                answer: 1,
+                rationale: "Zero Trust assumes breach and verifies every access request explicitly across identity, endpoint, network, and data."
+            },
+            {
+                id: 41,
+                domain: "Governance & Management",
+                type: "dropdown",
+                question: "Identify the security service matching each requirement:",
+                items: [
+                    { statement: "Filtering network traffic entering or leaving Azure subnets:", options: ["Network Security Group (NSG)", "Azure Firewall", "Azure DDoS Protection"], answer: "Network Security Group (NSG)" },
+                    { statement: "Stateful managed firewall service for entire Virtual Networks:", options: ["Network Security Group (NSG)", "Azure Firewall", "Azure DDoS Protection"], answer: "Azure Firewall" }
+                ],
+                rationale: "NSGs filter subnet and interface traffic; Azure Firewall provides centralized, intelligent VNet network protection."
+            },
+            {
+                id: 42,
+                domain: "Governance & Management",
+                type: "yesno",
+                question: "Azure Cost Management allows setting custom spending alerts and budget thresholds.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 0,
+                rationale: "True. Azure Cost Management lets administrators define budgets and send alerts when spending thresholds are met."
+            },
+            {
+                id: 43,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "Which tool evaluates your Azure environment and provides personalized best-practice recommendations for cost, security, performance, and reliability?",
+                options: ["Azure Monitor", "Microsoft Defender for Cloud", "Azure Advisor", "Azure Service Health"],
+                answer: 2,
+                rationale: "Azure Advisor analyzes resource configuration and usage telemetry to provide actionable optimization recommendations."
+            },
+            {
+                id: 44,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "What service notifies you about planned Azure maintenance, outages, and service health incidents affecting your specific subscription?",
+                options: ["Azure Status Page", "Azure Service Health", "Azure Monitor", "Application Insights"],
+                answer: 1,
+                rationale: "Azure Service Health delivers personalized health tracking for services and regions tied directly to your deployment."
+            },
+            {
+                id: 45,
+                domain: "Governance & Management",
+                type: "yesno",
+                question: "Applying Azure Tags on resources automatically restricts user permissions on those tagged resources.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 1,
+                rationale: "False. Tags are metadata key-value pairs used purely for categorization, billing, and organization, not access control."
+            },
+            {
+                id: 46,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "Which solution allows managing servers and Kubernetes clusters hosted on-premises or in AWS/GCP from within Azure?",
+                options: ["Azure Arc", "Azure Automation", "Azure Blueprints", "Azure Bastion"],
+                answer: 0,
+                rationale: "Azure Arc extends Azure governance, policies, and management services to multi-cloud and on-premises environments."
+            },
+            {
+                id: 47,
+                domain: "Governance & Management",
+                type: "dragdrop",
+                question: "Match the monitoring tool to its primary function:",
+                targets: ["Azure Monitor", "Log Analytics", "Application Insights"],
+                items: [
+                    { text: "Collects telemetry and performance metrics across infrastructure", correctTarget: "Azure Monitor" },
+                    { text: "Central query engine for analyzing log data", correctTarget: "Log Analytics" },
+                    { text: "Monitors live application performance and user telemetry", correctTarget: "Application Insights" }
+                ],
+                rationale: "Azure Monitor collects foundational metrics; Log Analytics queries log data; Application Insights monitors APM app performance."
+            },
+            {
+                id: 48,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "Which infrastructure-as-code format uses declarative JSON/Bicep syntax to deploy Azure resources predictably?",
+                options: ["ARM Templates", "PowerShell Scripts", "Azure CLI Shell", "Azure Automation Runbooks"],
+                answer: 0,
+                rationale: "Azure Resource Manager (ARM) templates and Bicep files define infrastructure declaratively in JSON/Bicep syntax."
+            },
+            {
+                id: 49,
+                domain: "Governance & Management",
+                type: "yesno",
+                question: "Microsoft Defender for Cloud provides security posture management and threat protection across workloads.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 0,
+                rationale: "True. Defender for Cloud manages security posture (CSPM) and delivers advanced threat protection for hybrid workloads."
+            },
+            {
+                id: 50,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "Which calculator estimates monthly cost savings before migrating workloads to Azure?",
+                options: ["Azure Total Cost of Ownership (TCO) Calculator", "Azure Pricing Calculator", "Azure Cost Management", "Azure Budget Portal"],
+                answer: 0,
+                rationale: "The TCO Calculator compares on-premises datacenter operational costs against cloud hosting costs over time."
+            },
+            {
+                id: 51,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "What Entra ID capability evaluates conditions like user location and device state to enforce access rules dynamically?",
+                options: ["Conditional Access", "Role-Based Access Control", "Privileged Identity Management", "Self-Service Password Reset"],
+                answer: 0,
+                rationale: "Conditional Access uses contextual signals (location, risk, device status) to grant or block access."
+            },
+            {
+                id: 52,
+                domain: "Governance & Management",
+                type: "yesno",
+                question: "An Azure Free Account includes $200 credit for 30 days and access to popular free services for 12 months.",
+                options: ["Yes (True)", "No (False)"],
+                answer: 0,
+                rationale: "True. Azure Free Account grants initial credits along with 12 months of popular free services."
+            },
+            {
+                id: 53,
+                domain: "Governance & Management",
+                type: "dropdown",
+                question: "Select the correct Resource Lock type for each requirement:",
+                items: [
+                    { statement: "Authorized users can read/modify a resource, but cannot delete it:", options: ["CanNotDelete", "ReadOnly"], answer: "CanNotDelete" },
+                    { statement: "Authorized users can read a resource, but cannot update or delete it:", options: ["CanNotDelete", "ReadOnly"], answer: "ReadOnly" }
+                ],
+                rationale: "CanNotDelete allows updates/edits but blocks deletion. ReadOnly blocks both modifications and deletions."
+            },
+            {
+                id: 54,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "Which portal provides access to audit reports, SOC compliance documents, and privacy whitepapers regarding Microsoft Cloud services?",
+                options: ["Microsoft Trust Center / Service Trust Portal", "Azure Compliance Dashboard", "Azure Portal", "Privacy Gateway"],
+                answer: 0,
+                rationale: "The Service Trust Portal hosts independent audit reports, ISO/SOC certifications, and compliance documentation."
+            },
+            {
+                id: 55,
+                domain: "Governance & Management",
+                type: "mcq",
+                question: "What service enables secure remote RDP/SSH access to Azure Virtual Machines directly through the Azure Portal over SSL/TLS without public IPs?",
+                options: ["Azure Bastion", "Azure VPN Gateway", "Azure ExpressRoute", "Azure Application Gateway"],
+                answer: 0,
+                rationale: "Azure Bastion provides fully managed browser-based RDP/SSH access without exposing VMs to public IP addresses."
+            }
+        ];
+
+        // State Tracking
+        let currentIdx = 0;
+        let userAnswers = {}; // questionIndex -> answer data
+
+        // DOM Elements
+        const introCard = document.getElementById("intro-card");
+        const questionCard = document.getElementById("question-card");
+        const resultsCard = document.getElementById("results-card");
+        const startBtn = document.getElementById("start-btn");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const submitAnsBtn = document.getElementById("submit-ans-btn");
+        const restartBtn = document.getElementById("restart-btn");
+
+        const progressText = document.getElementById("progress-text");
+        const progressBar = document.getElementById("progress-bar");
+        const questionDomain = document.getElementById("question-domain");
+        const questionType = document.getElementById("question-type");
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const explanationBox = document.getElementById("explanation-box");
+        const explanationText = document.getElementById("explanation-text");
+
+        // App Initialization
+        startBtn.addEventListener("click", startQuiz);
+        restartBtn.addEventListener("click", startQuiz);
+        prevBtn.addEventListener("click", prevQuestion);
+        nextBtn.addEventListener("click", nextQuestion);
+        submitAnsBtn.addEventListener("click", submitAnswer);
+
+        function startQuiz() {
+            currentIdx = 0;
+            userAnswers = {};
+            introCard.classList.add("hidden");
+            resultsCard.classList.add("hidden");
+            questionCard.classList.remove("hidden");
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            
+            // Progress Header
+            progressText.innerText = `Question ${currentIdx + 1} of ${questions.length}`;
+            progressBar.style.width = `${((currentIdx + 1) / questions.length) * 100}%`;
+            
+            questionDomain.innerText = q.domain;
+            questionType.innerText = getTypeName(q.type);
+            questionText.innerText = `${q.id}. ${q.question}`;
+
+            // Reset UI States
+            optionsContainer.innerHTML = "";
+            explanationBox.classList.add("hidden");
+            submitAnsBtn.classList.remove("hidden");
+            nextBtn.classList.add("hidden");
+            prevBtn.disabled = currentIdx === 0;
+
+            const existingAns = userAnswers[currentIdx];
+
+            // Render Formats
+            if (q.type === "mcq" || q.type === "yesno") {
+                renderMCQ(q, existingAns);
+            } else if (q.type === "dropdown") {
+                renderDropdown(q, existingAns);
+            } else if (q.type === "dragdrop") {
+                renderDragDrop(q, existingAns);
+            }
+
+            if (existingAns && existingAns.submitted) {
+                showExplanation(q, existingAns);
+                submitAnsBtn.classList.add("hidden");
+                nextBtn.classList.remove("hidden");
+            }
+        }
+
+        function getTypeName(type) {
+            switch(type) {
+                case "mcq": return "Multiple Choice";
+                case "yesno": return "True / False";
+                case "dropdown": return "Dropdown Selection";
+                case "dragdrop": return "Matching / Drag & Drop";
+                default: return "Question";
+            }
+        }
+
+        // Render MCQ & Yes/No
+        function renderMCQ(q, existingAns) {
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-4 rounded-lg border border-slate-200 hover:border-blue-400 hover:bg-slate-50 transition flex items-center justify-between font-medium text-slate-700";
+                
+                if (existingAns) {
+                    if (existingAns.selected === idx) {
+                        btn.classList.add("selected-option");
+                    }
+                    if (existingAns.submitted) {
+                        if (idx === q.answer) btn.classList.add("correct-answer");
+                        else if (existingAns.selected === idx) btn.classList.add("incorrect-answer");
+                        btn.disabled = true;
+                    }
+                }
+
+                btn.innerHTML = `
+                    <span>${opt}</span>
+                    <i class="${existingAns && existingAns.selected === idx ? 'fa-solid fa-circle-dot text-blue-600' : 'fa-regular fa-circle text-slate-400'}"></i>
+                `;
+
+                btn.onclick = () => {
+                    if (existingAns && existingAns.submitted) return;
+                    userAnswers[currentIdx] = { selected: idx, submitted: false };
+                    renderQuestion();
+                };
+
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        // Render Dropdown
+        function renderDropdown(q, existingAns) {
+            const container = document.createElement("div");
+            container.className = "space-y-4";
+
+            if (!userAnswers[currentIdx]) {
+                userAnswers[currentIdx] = { selected: {}, submitted: false };
+            }
+
+            q.items.forEach((item, idx) => {
+                const row = document.createElement("div");
+                row.className = "p-4 bg-slate-50 rounded-lg border border-slate-200";
+                
+                const p = document.createElement("p");
+                p.className = "text-sm font-semibold text-slate-800 mb-2";
+                p.innerText = item.statement;
+
+                const select = document.createElement("select");
+                select.className = "w-full p-2.5 bg-white border border-slate-300 rounded-md text-sm text-slate-800 focus:ring-2 focus:ring-blue-500";
+                
+                const defaultOpt = document.createElement("option");
+                defaultOpt.value = "";
+                defaultOpt.innerText = "-- Select Option --";
+                select.appendChild(defaultOpt);
+
+                item.options.forEach(opt => {
+                    const o = document.createElement("option");
+                    o.value = opt;
+                    o.innerText = opt;
+                    if (userAnswers[currentIdx].selected[idx] === opt) {
+                        o.selected = true;
+                    }
+                    select.appendChild(o);
+                });
+
+                if (existingAns && existingAns.submitted) {
+                    select.disabled = true;
+                    if (userAnswers[currentIdx].selected[idx] === item.answer) {
+                        row.classList.add("bg-emerald-50", "border-emerald-300");
+                    } else {
+                        row.classList.add("bg-rose-50", "border-rose-300");
+                    }
+                }
+
+                select.onchange = (e) => {
+                    userAnswers[currentIdx].selected[idx] = e.target.value;
+                };
+
+                row.appendChild(p);
+                row.appendChild(select);
+                container.appendChild(row);
+            });
+
+            optionsContainer.appendChild(container);
+        }
+
+        // Render Drag & Drop
+        function renderDragDrop(q, existingAns) {
+            const container = document.createElement("div");
+            container.className = "space-y-4";
+
+            if (!userAnswers[currentIdx]) {
+                userAnswers[currentIdx] = { selected: {}, submitted: false };
+            }
+
+            // Targets Zone
+            q.items.forEach((item, idx) => {
+                const row = document.createElement("div");
+                row.className = "p-4 bg-slate-50 rounded-lg border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4";
+                
+                const desc = document.createElement("div");
+                desc.className = "text-sm text-slate-800 font-medium md:w-3/5";
+                desc.innerText = item.text;
+
+                const select = document.createElement("select");
+                select.className = "p-2 bg-white border border-slate-300 rounded-md text-sm text-slate-800 md:w-2/5";
+                
+                const defaultOpt = document.createElement("option");
+                defaultOpt.value = "";
+                defaultOpt.innerText = "-- Select Target --";
+                select.appendChild(defaultOpt);
+
+                q.targets.forEach(target => {
+                    const o = document.createElement("option");
+                    o.value = target;
+                    o.innerText = target;
+                    if (userAnswers[currentIdx].selected[idx] === target) {
+                        o.selected = true;
+                    }
+                    select.appendChild(o);
+                });
+
+                if (existingAns && existingAns.submitted) {
+                    select.disabled = true;
+                    if (userAnswers[currentIdx].selected[idx] === item.correctTarget) {
+                        row.classList.add("bg-emerald-50", "border-emerald-300");
+                    } else {
+                        row.classList.add("bg-rose-50", "border-rose-300");
+                    }
+                }
+
+                select.onchange = (e) => {
+                    userAnswers[currentIdx].selected[idx] = e.target.value;
+                };
+
+                row.appendChild(desc);
+                row.appendChild(select);
+                container.appendChild(row);
+            });
+
+            optionsContainer.appendChild(container);
+        }
+
+        function submitAnswer() {
+            const q = questions[currentIdx];
+            let ans = userAnswers[currentIdx];
+
+            if (!ans) {
+                alert("Please select or specify an answer before submitting.");
+                return;
+            }
+
+            // Validation
+            if (q.type === "mcq" || q.type === "yesno") {
+                if (ans.selected === undefined) {
+                    alert("Please select an option.");
+                    return;
+                }
+                ans.isCorrect = (ans.selected === q.answer);
+            } else if (q.type === "dropdown") {
+                let correctCount = 0;
+                q.items.forEach((item, idx) => {
+                    if (ans.selected[idx] === item.answer) correctCount++;
+                });
+                ans.isCorrect = (correctCount === q.items.length);
+            } else if (q.type === "dragdrop") {
+                let correctCount = 0;
+                q.items.forEach((item, idx) => {
+                    if (ans.selected[idx] === item.correctTarget) correctCount++;
+                });
+                ans.isCorrect = (correctCount === q.items.length);
+            }
+
+            ans.submitted = true;
+            renderQuestion();
+        }
+
+        function showExplanation(q, ans) {
+            explanationBox.classList.remove("hidden");
+            if (ans.isCorrect) {
+                explanationBox.className = "mt-6 p-4 rounded-lg border text-sm leading-relaxed bg-emerald-50 border-emerald-300 text-emerald-900";
+                explanationText.innerHTML = `<strong>Correct!</strong> ${q.rationale}`;
+            } else {
+                explanationBox.className = "mt-6 p-4 rounded-lg border text-sm leading-relaxed bg-rose-50 border-rose-300 text-rose-900";
+                explanationText.innerHTML = `<strong>Incorrect.</strong> ${q.rationale}`;
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIdx < questions.length - 1) {
+                currentIdx++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            questionCard.classList.add("hidden");
+            resultsCard.classList.remove("hidden");
+
+            let correctTotal = 0;
+            let domainStats = {};
+
+            questions.forEach((q, idx) => {
+                if (!domainStats[q.domain]) {
+                    domainStats[q.domain] = { total: 0, correct: 0 };
+                }
+                domainStats[q.domain].total++;
+
+                const ans = userAnswers[idx];
+                if (ans && ans.isCorrect) {
+                    correctTotal++;
+                    domainStats[q.domain].correct++;
+                }
+            });
+
+            const percentage = Math.round((correctTotal / questions.length) * 100);
+            const scaledScore = Math.round((correctTotal / questions.length) * 1000);
+            const passed = scaledScore >= 700;
+
+            // Score Banner
+            const scoreBadge = document.getElementById("score-badge");
+            scoreBadge.innerText = `${percentage}%`;
+            scoreBadge.className = `w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-3xl font-extrabold shadow-md ${passed ? 'bg-emerald-600' : 'bg-rose-600'}`;
+
+            document.getElementById("score-title").innerText = passed ? "Congratulations! You Passed!" : "Exam Needs Review";
+            document.getElementById("score-title").className = `text-2xl font-bold ${passed ? 'text-emerald-700' : 'text-rose-700'}`;
+
+            document.getElementById("points-text").innerText = `${correctTotal} / ${questions.length}`;
+            document.getElementById("scaled-score-text").innerText = `${scaledScore} / 1000`;
+            document.getElementById("correct-count").innerText = correctTotal;
+            document.getElementById("incorrect-count").innerText = questions.length - correctTotal;
+
+            // Domain UI
+            const domainContainer = document.getElementById("domain-results");
+            domainContainer.innerHTML = "";
+
+            for (const [dom, stats] of Object.entries(domainStats)) {
+                const domPct = Math.round((stats.correct / stats.total) * 100);
+                const div = document.createElement("div");
+                div.className = "bg-slate-50 p-4 rounded-lg border border-slate-200";
+                div.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-semibold text-slate-800 text-sm">${dom}</span>
+                        <span class="text-sm font-bold text-slate-700">${stats.correct}/${stats.total} (${domPct}%)</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-2">
+                        <div class="h-2 rounded-full ${domPct >= 70 ? 'bg-emerald-500' : 'bg-amber-500'}" style="width: ${domPct}%"></div>
+                    </div>
+                `;
+                domainContainer.appendChild(div);
+            }
+        }
+    </script>
+</body>
+</html>
+```eof
+
+### Practice Exam Highlights
+- **55 Questions Total** covering all three current AZ-900 Microsoft Azure Fundamentals domains.
+- **Multiple Question Formats:** Multiple choice questions (MCQs), True/False (Yes/No), Matching/Drag-and-Drop options, and inline Dropdown selection items.
+- **Instant Rationale & Guidance:** Displays detailed explanations after submitting each question.
+- **Comprehensive Score Reporting:** Provides percentage score, scaled score (out of 1000), pass/fail indicator (700 threshold), and a domain-by-domain performance breakdown.
